@@ -16,7 +16,7 @@
  	<mvc:annotation-driven/>
  	<mvc:default-servlet-handler/>   
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-	    <property name="prefix" value="/web-inf/jsp"/> 
+	    <property name="prefix" value="/WEB-INF/jsp/"/> 
 	    <property name="suffix" value=".jsp"/>
 	</bean>
 	<!-- SpringMVC上传文件时，需要配置MultipartResolver处理器；【还自动解决了文本参数可以提交到控制器】 -->

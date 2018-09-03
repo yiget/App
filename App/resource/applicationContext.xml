@@ -14,14 +14,14 @@
 	
 	<!-- 扫描service层的所有注解 -->
 	<context:component-scan base-package="service"></context:component-scan>
-  	<bean id="theLogger" class="aop.AopLogger"></bean>
+<!--   	<bean id="theLogger" class="aop.AopLogger"></bean>
   	<aop:config>
-  		<!-- 定义一个切入点表达式，并命名为“pointcut” -->
+  		定义一个切入点表达式，并命名为“pointcut”
   		<aop:pointcut expression="execution(public * *(..))" id="pointcut"/>
   		<aop:aspect ref="theLogger">
   			<aop:before method="before" pointcut-ref="pointcut"/>
   		</aop:aspect>
-  	</aop:config>
+  	</aop:config> -->
 	
 	 <!-- 引入properties文件 -->
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

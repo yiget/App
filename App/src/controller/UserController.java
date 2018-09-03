@@ -25,6 +25,4 @@ public class UserController {
 		System.out.println(2);
 		return "backendlogin";
 	}
-	
-	
 }

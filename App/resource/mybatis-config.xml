@@ -8,7 +8,7 @@
     </typeAliases>
 <!-- 
     配置数据连接信息-->
-	<environments default="development">
+<!-- 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC" />
 			<dataSource type="POOLED">
@@ -18,7 +18,7 @@
 				<property name="password" value="" />
 			</dataSource>
 		</environment>
-	</environments> 
+	</environments>  -->
 	
 	<!-- SQL语句映射信息 -->
 <!-- 	<mappers>

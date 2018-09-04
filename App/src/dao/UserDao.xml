@@ -2,6 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dao.UserDao">
-	
-		
+	<select id="findCode" resultType="entity.BackendUser" parameterType="Map">
+	    select *,(select valuename from data_dictionary where id=a.userType) userTypeName from backend_user a  where userCode=#{code}
+			<if test="password != null">
+				and userPassword = #{password}
+			</if>
+	</select>
+	<select id="findUser" resultType="entity.DevUser" parameterType="Map">
+	    select * from dev_user where devCode=#{code}
+			<if test="password != null">
+				and devPassword = #{password}
+			</if>
+	</select>	
 </mapper>

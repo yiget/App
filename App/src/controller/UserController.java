@@ -88,6 +88,7 @@ public class UserController {
 	public String applist(HttpServletRequest request){
 		
 		String currentPageNo = request.getParameter("pageIndex");
+		String softwareName = request.getParameter("querySoftwareName");
 
 		Page page = new Page();
 		if(currentPageNo == null){
@@ -96,6 +97,7 @@ public class UserController {
 			page.setCurrentPageNo(Integer.valueOf(currentPageNo));
 		}
 		Map<String, Object> map = new HashMap<>();
+		map.put("softwareName", softwareName);
 		map.put("pageIndex",(page.getCurrentPageNo()-1)*5);
 		
 		int totalCount = userService.count(map);
@@ -107,7 +109,7 @@ public class UserController {
 		List<DataDictionary> listPt = userService.queryPt();
 		request.setAttribute("appInfoList",listApp);
 		request.setAttribute("flatFormList",listPt);
-		
+		request.setAttribute("querySoftwareName", softwareName);
 		request.setAttribute("totalPageCount", page.getTotalPageCount());
 		request.setAttribute("currentPageNo", page.getCurrentPageNo());
 		request.setAttribute("totalCount", page.getTotalCount());

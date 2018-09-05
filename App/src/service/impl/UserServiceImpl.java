@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dao.UserDao;
+import entity.AppCategory;
 import entity.AppInfo;
 import entity.BackendUser;
+import entity.DataDictionary;
 import entity.DevUser;
 import service.UserService;
 
@@ -31,5 +33,13 @@ public class UserServiceImpl implements UserService{
 	public List<AppInfo> queryApp(Map<String, Object> map) {
 		return userDao.queryApp(map);
 	}
-
+	//查询APP信息表总页数
+	public int count(Map<String, Object> map) {
+		return userDao.count(map);
+	}
+	
+	//查询所属平台
+	public List<DataDictionary> queryPt(){
+		return userDao.queryPt();
+	}
 }

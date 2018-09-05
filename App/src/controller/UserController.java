@@ -8,24 +8,18 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
 import service.UserService;
-
-import dao.UserDao;
 import entity.AppInfo;
 import entity.BackendUser;
+import entity.DataDictionary;
 import entity.DevUser;
+import entity.Page;
 
-
-import service.UserService;
 
 
 @Controller
@@ -92,9 +86,42 @@ public class UserController {
 	//返回App审核页面
 	@RequestMapping("/manager/backend/app/list")
 	public String applist(HttpServletRequest request){
+		
+		String currentPageNo = request.getParameter("pageIndex");
+
+		Page page = new Page();
+		if(currentPageNo == null){
+			page.setCurrentPageNo(1);
+		}else{
+			page.setCurrentPageNo(Integer.valueOf(currentPageNo));
+		}
 		Map<String, Object> map = new HashMap<>();
-		List<AppInfo> list = userService.queryApp(map);
-		request.setAttribute("appInfoList", list);
+		map.put("pageIndex",(page.getCurrentPageNo()-1)*5);
+		
+		int totalCount = userService.count(map);
+		int totalPageCount = totalCount%5==0?totalCount/5:totalCount/5+1;
+		page.setTotalCount(totalCount);
+		page.setTotalPageCount(totalPageCount);
+		
+		List<AppInfo> listApp = userService.queryApp(map);
+		List<DataDictionary> listPt = userService.queryPt();
+		request.setAttribute("appInfoList",listApp);
+		request.setAttribute("flatFormList",listPt);
+		
+		request.setAttribute("totalPageCount", page.getTotalPageCount());
+		request.setAttribute("currentPageNo", page.getCurrentPageNo());
+		request.setAttribute("totalCount", page.getTotalCount());
+		request.setAttribute("pages", page);
+		
+//		List<AppCategory> listYi = userService.queryYi();
+//		List<AppCategory> listEr = userService.queryEr();
+//		List<AppCategory> listSan = userService.querySan();
+//		System.out.println(listYi.size());
+//		System.out.println(listEr.size());
+//		request.setAttribute("categoryLevel1List", listYi);
+//		request.setAttribute("categoryLevel2List", listEr);
+//		request.setAttribute("categoryLevel3List", listSan);
+		
 		return "backend/applist";
 	}
 }

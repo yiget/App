@@ -18,62 +18,36 @@
 	</select>
 	<!-- 查询所有App信息 -->
 		<select id="queryApp" resultType="entity.AppInfo" parameterType="Map">
-			SELECT
-	a.softwareName,
-	a.apkName,
-	a.softwareSize,
-	(
-		SELECT
-			valueName
-		FROM
-			data_dictionary
-		WHERE
-			a.flatformId = valueId
-		AND typeName = '所属平台'
-	) AS flatformName,
-	(
-		SELECT
-			categoryName
-		FROM
-			app_category
-		WHERE
-			a.categoryLevel1 = id
-	) AS categoryLevel1Name,
-	(
-		SELECT
-			categoryName
-		FROM
-			app_category
-		WHERE
-			a.categoryLevel2 = id
-	) AS categoryLevel2Name,
-	(
-		SELECT
-			categoryName
-		FROM
-			app_category
-		WHERE
-			a.categoryLevel3 = id
-	) AS categoryLevel3Name,
-	(
-		SELECT
-			valueName
-		FROM
-			data_dictionary
-		WHERE
-			a. STATUS = valueId
-		AND typeName = 'APP状态'
-	) AS statusName,
-	a.downloads,
-	(
-		SELECT
-			versionNo
-		FROM
-			app_version
-		WHERE
-			a.versionId = id
-	) AS versionNo
-FROM
-	app_info a
+SELECT a.softwareName,a.apkName,a.softwareSize,(SELECT valueName FROM data_dictionary WHERE a.flatformId = valueId AND typeName = '所属平台') AS flatformName,
+(SELECT categoryName FROM app_category WHERE a.categoryLevel1 = id) AS categoryLevel1Name,
+(SELECT categoryName FROM app_category WHERE a.categoryLevel2 = id) AS categoryLevel2Name,
+(SELECT categoryName FROM app_category WHERE a.categoryLevel3 = id) AS categoryLevel3Name,
+(SELECT valueName FROM data_dictionary WHERE a. STATUS = valueId AND typeName = 'APP状态') AS statusName,a.downloads,
+(SELECT versionNo FROM app_version WHERE a.versionId = id) AS versionNo FROM app_info a LIMIT #{pageIndex},5
 	</select>
+	<!-- 查询App总页数 -->
+	<select id="count" resultType="int" parameterType="Map">
+	      select count(*) from app_info
+	</select>
+	<!-- 查询所属平台 -->
+	<select id="queryPt" resultType="entity.DataDictionary">
+	    SELECT * FROM data_dictionary WHERE typeName = '所属平台'
+	</select>
+	
+	<!-- 查询一级分类 -->
+<!-- 	<select id="queryYi" resultType="entity.AppCategory">
+	    SELECT categoryName FROM app_category  WHERE parentId is null
+	</select> -->
+	<!-- 查询二级分类 -->
+<!-- 	<select id="queryEr" resultType="entity.AppCategory">
+	    SELECT categoryName FROM app_category  WHERE parentId in
+		(SELECT id FROM app_category  WHERE parentId is null)
+	</select> -->
+	<!-- 查询三级分类 -->
+<!-- 	<select id="querySan" resultType="entity.AppCategory">
+	    SELECT categoryName FROM app_category  WHERE parentId in
+	    (SELECT id FROM app_category  WHERE parentId in
+	    (SELECT id FROM app_category  WHERE parentId is null))
+	</select> -->
+	
 </mapper>

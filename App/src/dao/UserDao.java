@@ -1,15 +1,19 @@
 
 package dao;
 
+import java.util.List;
 import java.util.Map;
 
+import entity.AppInfo;
 import entity.BackendUser;
 import entity.DevUser;
 
 public interface UserDao {
-	//查询后台账户
+	//后台登录
 	public BackendUser findCode(Map<String, String> map);
-	//查询前台账户
+	//前台登录
 	public DevUser findUser(Map<String, String> map);
+	//查询所有APP信息
+	public List<AppInfo> queryApp(Map<String, String> map);
 
 }

@@ -2,16 +2,78 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dao.UserDao">
+	<!-- 后台登录 -->	
 	<select id="findCode" resultType="entity.BackendUser" parameterType="Map">
 	    select *,(select valuename from data_dictionary where id=a.userType) userTypeName from backend_user a  where userCode=#{code}
 			<if test="password != null">
 				and userPassword = #{password}
 			</if>
 	</select>
+	<!-- 前台登录 -->	
 	<select id="findUser" resultType="entity.DevUser" parameterType="Map">
 	    select * from dev_user where devCode=#{code}
 			<if test="password != null">
 				and devPassword = #{password}
 			</if>
-	</select>	
+	</select>
+	<!-- 查询所有App信息 -->
+		<select id="queryApp" resultType="entity.AppInfo" parameterType="Map">
+			SELECT
+	a.softwareName,
+	a.apkName,
+	a.softwareSize,
+	(
+		SELECT
+			valueName
+		FROM
+			data_dictionary
+		WHERE
+			a.flatformId = valueId
+		AND typeName = '所属平台'
+	) AS flatformName,
+	(
+		SELECT
+			categoryName
+		FROM
+			app_category
+		WHERE
+			a.categoryLevel1 = id
+	) AS categoryLevel1Name,
+	(
+		SELECT
+			categoryName
+		FROM
+			app_category
+		WHERE
+			a.categoryLevel2 = id
+	) AS categoryLevel2Name,
+	(
+		SELECT
+			categoryName
+		FROM
+			app_category
+		WHERE
+			a.categoryLevel3 = id
+	) AS categoryLevel3Name,
+	(
+		SELECT
+			valueName
+		FROM
+			data_dictionary
+		WHERE
+			a. STATUS = valueId
+		AND typeName = 'APP状态'
+	) AS statusName,
+	a.downloads,
+	(
+		SELECT
+			versionNo
+		FROM
+			app_version
+		WHERE
+			a.versionId = id
+	) AS versionNo
+FROM
+	app_info a
+	</select>
 </mapper>

@@ -42,4 +42,11 @@ public class UserServiceImpl implements UserService{
 	public List<DataDictionary> queryPt(){
 		return userDao.queryPt();
 	}
+
+	@Override
+	public List<AppCategory> fenlei(int id) {
+		// TODO Auto-generated method stub
+		
+		return userDao.fenlei(id);
+	}
 }

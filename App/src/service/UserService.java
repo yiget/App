@@ -20,5 +20,7 @@ public interface UserService {
 	public int count(Map<String,Object> map);
 	//查询所属平台
 	public List<DataDictionary> queryPt();
+	//根据父级id查询分类列表
+	public List<AppCategory> fenlei(int id);
 
 }

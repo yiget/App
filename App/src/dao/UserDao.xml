@@ -60,5 +60,7 @@ SELECT a.softwareName,a.apkName,a.softwareSize,(SELECT valueName FROM data_dicti
 	    (SELECT id FROM app_category  WHERE parentId in
 	    (SELECT id FROM app_category  WHERE parentId is null))
 	</select> -->
-	
+		<select id="fenlei" resultType="entity.AppCategory" parameterType="int">
+	select * from app_category WHERE parentid = #{id}
+	</select>
 </mapper>

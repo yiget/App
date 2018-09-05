@@ -11,9 +11,12 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 
 import service.UserService;
+import entity.AppCategory;
 import entity.AppInfo;
 import entity.BackendUser;
 import entity.DataDictionary;
@@ -86,6 +89,7 @@ public class UserController {
 	//返回App审核页面
 	@RequestMapping("/manager/backend/app/list")
 	public String applist(HttpServletRequest request){
+
 		
 		String currentPageNo = request.getParameter("pageIndex");
 		String softwareName = request.getParameter("querySoftwareName");
@@ -125,5 +129,20 @@ public class UserController {
 //		request.setAttribute("categoryLevel3List", listSan);
 		
 		return "backend/applist";
+	}
+	/**
+	 * ajax下拉列表分类
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("categorylevellist.json")
+	public Object fenlei(HttpServletRequest request){
+		String pid=request.getParameter("pid");
+		//这里写查询方法
+		int id=Integer.valueOf(pid);
+		List<AppCategory> list=userService.fenlei(id);
+		//返回json格式
+		return JSON.toJSON(list);
 	}
 }

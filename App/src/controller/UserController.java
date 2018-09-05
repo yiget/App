@@ -2,6 +2,7 @@ package controller;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import service.UserService;
 
 import dao.UserDao;
+import entity.AppInfo;
 import entity.BackendUser;
 import entity.DevUser;
 
@@ -87,10 +89,12 @@ public class UserController {
 		return "developer/main";
 	}
 
-	//测试
+	//返回App审核页面
 	@RequestMapping("/manager/backend/app/list")
-	public String aaaa(){
-		System.out.println(2);
+	public String applist(HttpServletRequest request){
+		Map<String, Object> map = new HashMap<>();
+		List<AppInfo> list = userService.queryApp(map);
+		request.setAttribute("appInfoList", list);
 		return "backend/applist";
 	}
 }

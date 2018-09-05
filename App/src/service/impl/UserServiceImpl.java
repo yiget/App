@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	//查询所有APP信息
-	public List<AppInfo> queryApp(Map<String, String> map) {
+	public List<AppInfo> queryApp(Map<String, Object> map) {
 		return userDao.queryApp(map);
 	}
 

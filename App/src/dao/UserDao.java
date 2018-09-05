@@ -14,6 +14,6 @@ public interface UserDao {
 	//前台登录
 	public DevUser findUser(Map<String, String> map);
 	//查询所有APP信息
-	public List<AppInfo> queryApp(Map<String, String> map);
+	public List<AppInfo> queryApp(Map<String, Object> map);
 
 }

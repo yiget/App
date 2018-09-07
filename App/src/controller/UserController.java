@@ -94,7 +94,7 @@ public class UserController {
 		
 		String currentPageNo = request.getParameter("pageIndex");
 		String softwareName = request.getParameter("querySoftwareName");
-//		String valueId = request.getParameter("queryFlatformId");
+		String valueId = request.getParameter("queryFlatformId");
 
 		Page page = new Page();
 		if(currentPageNo == null){
@@ -104,7 +104,7 @@ public class UserController {
 		}
 		Map<String, Object> map = new HashMap<>();
 		map.put("softwareName", softwareName);
-//		map.put("valueId", valueId);
+		map.put("flatformId", valueId);
 		map.put("pageIndex",(page.getCurrentPageNo()-1)*5);
 		
 		int totalCount = userService.count(map);
@@ -117,7 +117,7 @@ public class UserController {
 		request.setAttribute("appInfoList",listApp);
 		request.setAttribute("flatFormList",listPt);
 		request.setAttribute("querySoftwareName", softwareName);
-//		request.setAttribute("queryFlatformId", valueId);
+		request.setAttribute("queryFlatformId", valueId);
 		request.setAttribute("totalPageCount", page.getTotalPageCount());
 		request.setAttribute("currentPageNo", page.getCurrentPageNo());
 		request.setAttribute("totalCount", page.getTotalCount());
@@ -140,7 +140,8 @@ public class UserController {
 	public String appinfolist(HttpServletRequest request){
 		String currentPageNo = request.getParameter("pageIndex");
 		String softwareName = request.getParameter("querySoftwareName");
-//		String valueId = request.getParameter("queryFlatformId");
+		String FlatformId = request.getParameter("queryFlatformId");
+		String Status = request.getParameter("queryStatus");
 
 		Page page = new Page();
 		if(currentPageNo == null){
@@ -150,7 +151,8 @@ public class UserController {
 		}
 		Map<String, Object> map = new HashMap<>();
 		map.put("softwareName", softwareName);
-//		map.put("valueId", valueId);
+		map.put("flatformId", FlatformId);
+		map.put("STATUS", Status);
 		map.put("pageIndex",(page.getCurrentPageNo()-1)*5);
 		
 		int totalCount = userService.count(map);
@@ -165,7 +167,8 @@ public class UserController {
 		request.setAttribute("flatFormList",listPt);
 		request.setAttribute("statusList",listZt);
 		request.setAttribute("querySoftwareName", softwareName);
-//		request.setAttribute("queryFlatformId", valueId);
+		request.setAttribute("queryFlatformId", FlatformId);
+		request.setAttribute("queryStatus", Status);
 		request.setAttribute("totalPageCount", page.getTotalPageCount());
 		request.setAttribute("currentPageNo", page.getCurrentPageNo());
 		request.setAttribute("totalCount", page.getTotalCount());
@@ -179,7 +182,6 @@ public class UserController {
 		String id = request.getParameter("id");
 		AppInfo appinfo = userService.queryID(id);
 		List<AppVersion> appVersion = userService.queryBb(id);
-		System.out.println(appVersion.size());
 		request.setAttribute("appInfo", appinfo);
 		request.setAttribute("appVersionList", appVersion);
 		return "developer/appinfoview";

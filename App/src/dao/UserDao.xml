@@ -23,10 +23,16 @@ SELECT a.id,a.softwareName,a.apkName,a.softwareSize,(SELECT valueName FROM data_
 (SELECT categoryName FROM app_category WHERE a.categoryLevel2 = id) AS categoryLevel2Name,
 (SELECT categoryName FROM app_category WHERE a.categoryLevel3 = id) AS categoryLevel3Name,
 (SELECT valueName FROM data_dictionary WHERE a. STATUS = valueId AND typeName = 'APP状态') AS statusName,a.downloads,
-(SELECT versionNo FROM app_version WHERE a.versionId = id) AS versionNo FROM app_info a
+(SELECT versionNo FROM app_version WHERE a.versionId = id) AS versionNo FROM app_info a 
 		<where>
 			<if test="softwareName != null and softwareName != ''">
 				and softwareName like CONCAT ('%',#{softwareName},'%')
+			</if>
+			<if test="STATUS != null and STATUS != ''">
+				and STATUS = #{STATUS}
+			</if>
+			<if test="flatformId != null and flatformId != ''">
+				and flatformId = #{flatformId}
 			</if>
 		</where>
 	LIMIT #{pageIndex},5
@@ -37,6 +43,12 @@ SELECT a.id,a.softwareName,a.apkName,a.softwareSize,(SELECT valueName FROM data_
 		<where>
 			<if test="softwareName != null and softwareName != ''">
 				and softwareName like CONCAT ('%',#{softwareName},'%')
+			</if>
+			<if test="STATUS != null and STATUS != ''">
+				and STATUS = #{STATUS}
+			</if>
+			<if test="flatformId != null and flatformId != 0">
+				and flatformId = #{flatformId}
 			</if>
 		</where>
 	</select>
@@ -55,7 +67,7 @@ SELECT a.id,a.softwareName,a.apkName,a.supportROM,a.interfaceLanguage,a.software
 (SELECT categoryName FROM app_category WHERE a.categoryLevel1 = id) AS categoryLevel1Name,
 (SELECT categoryName FROM app_category WHERE a.categoryLevel2 = id) AS categoryLevel2Name,
 (SELECT categoryName FROM app_category WHERE a.categoryLevel3 = id) AS categoryLevel3Name,
-(SELECT valueName FROM data_dictionary WHERE a. STATUS = valueId AND typeName = 'APP状态') AS statusName,a.downloads,a.appInfo,
+(SELECT valueName FROM data_dictionary WHERE a. STATUS = valueId AND typeName = 'APP状态') AS statusName,a.downloads,a.appInfo,a.logoPicPath,
 (SELECT versionNo FROM app_version WHERE a.versionId = id) AS versionNo FROM app_info a where id = #{id}
 	</select> 
 	

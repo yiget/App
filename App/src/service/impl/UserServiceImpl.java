@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import dao.UserDao;
 import entity.AppCategory;
 import entity.AppInfo;
+import entity.AppVersion;
 import entity.BackendUser;
 import entity.DataDictionary;
 import entity.DevUser;
@@ -43,10 +44,23 @@ public class UserServiceImpl implements UserService{
 		return userDao.queryPt();
 	}
 
-	@Override
-	public List<AppCategory> fenlei(int id) {
-		// TODO Auto-generated method stub
-		
+	//查询APP状态
+	public List<DataDictionary> queryZt() {
+		return userDao.queryZt();
+	}
+	
+	//根据ID查看APP信息
+	public AppInfo queryID(String id){
+		return userDao.queryID(id);
+	}
+	
+	//根据ID查询历史版本
+	public List<AppVersion> queryBb(String id){
+		return userDao.queryBb(id);
+	}
+	
+	//根据父级id查询分类列表
+	public List<AppCategory> fenlei(int id) {		
 		return userDao.fenlei(id);
 	}
 }

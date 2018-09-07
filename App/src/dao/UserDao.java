@@ -6,6 +6,7 @@ import java.util.Map;
 
 import entity.AppCategory;
 import entity.AppInfo;
+import entity.AppVersion;
 import entity.BackendUser;
 import entity.DataDictionary;
 import entity.DevUser;
@@ -21,7 +22,12 @@ public interface UserDao {
 	public int count(Map<String,Object> map);
 	//查询所属平台
 	public List<DataDictionary> queryPt();
+	//查询APP状态
+	public List<DataDictionary> queryZt();
+	//根据ID查询APP信息
+	public AppInfo queryID(String id);
+	//根据ID查询历史版本
+	public List<AppVersion> queryBb(String id);
 	//根据父级id查询分类列表
 	public List<AppCategory> fenlei(int id);
-	
 }

@@ -18,12 +18,12 @@
 	</select>
 	<!-- 查询所有App信息 -->
 		<select id="queryApp" resultType="entity.AppInfo" parameterType="Map">
-SELECT a.softwareName,a.apkName,a.softwareSize,(SELECT valueName FROM data_dictionary WHERE a.flatformId = valueId AND typeName = '所属平台') AS flatformName,
+SELECT a.id,a.softwareName,a.apkName,a.softwareSize,(SELECT valueName FROM data_dictionary WHERE a.flatformId = valueId AND typeName = '所属平台') AS flatformName,
 (SELECT categoryName FROM app_category WHERE a.categoryLevel1 = id) AS categoryLevel1Name,
 (SELECT categoryName FROM app_category WHERE a.categoryLevel2 = id) AS categoryLevel2Name,
 (SELECT categoryName FROM app_category WHERE a.categoryLevel3 = id) AS categoryLevel3Name,
 (SELECT valueName FROM data_dictionary WHERE a. STATUS = valueId AND typeName = 'APP状态') AS statusName,a.downloads,
-(SELECT versionNo FROM app_version WHERE a.versionId = id) AS versionNo FROM app_info a 
+(SELECT versionNo FROM app_version WHERE a.versionId = id) AS versionNo FROM app_info a
 		<where>
 			<if test="softwareName != null and softwareName != ''">
 				and softwareName like CONCAT ('%',#{softwareName},'%')
@@ -44,7 +44,25 @@ SELECT a.softwareName,a.apkName,a.softwareSize,(SELECT valueName FROM data_dicti
 	<select id="queryPt" resultType="entity.DataDictionary">
 	    SELECT * FROM data_dictionary WHERE typeName = '所属平台'
 	</select>
+	<!-- 查询APP状态 -->
+	<select id="queryZt" resultType="entity.DataDictionary">
+	    SELECT * FROM data_dictionary WHERE typeName = 'APP状态'
+	</select>
 	
+	<!-- 根据ID查询APP信息 -->
+ 	<select id="queryID" resultType="entity.AppInfo">
+SELECT a.id,a.softwareName,a.apkName,a.supportROM,a.interfaceLanguage,a.softwareSize,(SELECT valueName FROM data_dictionary WHERE a.flatformId = valueId AND typeName = '所属平台') AS flatformName,
+(SELECT categoryName FROM app_category WHERE a.categoryLevel1 = id) AS categoryLevel1Name,
+(SELECT categoryName FROM app_category WHERE a.categoryLevel2 = id) AS categoryLevel2Name,
+(SELECT categoryName FROM app_category WHERE a.categoryLevel3 = id) AS categoryLevel3Name,
+(SELECT valueName FROM data_dictionary WHERE a. STATUS = valueId AND typeName = 'APP状态') AS statusName,a.downloads,a.appInfo,
+(SELECT versionNo FROM app_version WHERE a.versionId = id) AS versionNo FROM app_info a where id = #{id}
+	</select> 
+	
+	<select id="queryBb" resultType="entity.AppVersion">
+select (select softwareName from app_info where a.id=versionId)as appName,a.versionNo,a.versionSize,(SELECT valueName FROM data_dictionary WHERE a.publishStatus = valueId AND typeName = '发布状态') as publishStatusName,
+a.downloadLink,a.apkFileName,a.modifyDate from app_version a where appId=#{id}
+	</select>
 	<!-- 查询一级分类 -->
 <!-- 	<select id="queryYi" resultType="entity.AppCategory">
 	    SELECT categoryName FROM app_category  WHERE parentId is null

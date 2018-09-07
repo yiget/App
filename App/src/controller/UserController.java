@@ -18,6 +18,7 @@ import com.alibaba.fastjson.JSON;
 import service.UserService;
 import entity.AppCategory;
 import entity.AppInfo;
+import entity.AppVersion;
 import entity.BackendUser;
 import entity.DataDictionary;
 import entity.DevUser;
@@ -93,6 +94,7 @@ public class UserController {
 		
 		String currentPageNo = request.getParameter("pageIndex");
 		String softwareName = request.getParameter("querySoftwareName");
+//		String valueId = request.getParameter("queryFlatformId");
 
 		Page page = new Page();
 		if(currentPageNo == null){
@@ -102,6 +104,7 @@ public class UserController {
 		}
 		Map<String, Object> map = new HashMap<>();
 		map.put("softwareName", softwareName);
+//		map.put("valueId", valueId);
 		map.put("pageIndex",(page.getCurrentPageNo()-1)*5);
 		
 		int totalCount = userService.count(map);
@@ -114,6 +117,7 @@ public class UserController {
 		request.setAttribute("appInfoList",listApp);
 		request.setAttribute("flatFormList",listPt);
 		request.setAttribute("querySoftwareName", softwareName);
+//		request.setAttribute("queryFlatformId", valueId);
 		request.setAttribute("totalPageCount", page.getTotalPageCount());
 		request.setAttribute("currentPageNo", page.getCurrentPageNo());
 		request.setAttribute("totalCount", page.getTotalCount());
@@ -129,6 +133,56 @@ public class UserController {
 //		request.setAttribute("categoryLevel3List", listSan);
 		
 		return "backend/applist";
+	}
+
+	//返回App维护页面
+	@RequestMapping("/dev/flatform/app/list")
+	public String appinfolist(HttpServletRequest request){
+		String currentPageNo = request.getParameter("pageIndex");
+		String softwareName = request.getParameter("querySoftwareName");
+//		String valueId = request.getParameter("queryFlatformId");
+
+		Page page = new Page();
+		if(currentPageNo == null){
+			page.setCurrentPageNo(1);
+		}else{
+			page.setCurrentPageNo(Integer.valueOf(currentPageNo));
+		}
+		Map<String, Object> map = new HashMap<>();
+		map.put("softwareName", softwareName);
+//		map.put("valueId", valueId);
+		map.put("pageIndex",(page.getCurrentPageNo()-1)*5);
+		
+		int totalCount = userService.count(map);
+		int totalPageCount = totalCount%5==0?totalCount/5:totalCount/5+1;
+		page.setTotalCount(totalCount);
+		page.setTotalPageCount(totalPageCount);
+		
+		List<AppInfo> listApp = userService.queryApp(map);
+		List<DataDictionary> listPt = userService.queryPt();
+		List<DataDictionary> listZt = userService.queryZt();
+		request.setAttribute("appInfoList",listApp);
+		request.setAttribute("flatFormList",listPt);
+		request.setAttribute("statusList",listZt);
+		request.setAttribute("querySoftwareName", softwareName);
+//		request.setAttribute("queryFlatformId", valueId);
+		request.setAttribute("totalPageCount", page.getTotalPageCount());
+		request.setAttribute("currentPageNo", page.getCurrentPageNo());
+		request.setAttribute("totalCount", page.getTotalCount());
+		request.setAttribute("pages", page);
+		
+		return "developer/appinfolist";
+	}
+	//返回查看App信息页面
+	@RequestMapping("/dev/flatform/app/appview")
+	public String appinfoview(HttpServletRequest request){
+		String id = request.getParameter("id");
+		AppInfo appinfo = userService.queryID(id);
+		List<AppVersion> appVersion = userService.queryBb(id);
+		System.out.println(appVersion.size());
+		request.setAttribute("appInfo", appinfo);
+		request.setAttribute("appVersionList", appVersion);
+		return "developer/appinfoview";
 	}
 	/**
 	 * ajax下拉列表分类

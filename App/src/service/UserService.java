@@ -25,9 +25,25 @@ public interface UserService {
 	public List<DataDictionary> queryZt();
 	//根据ID查看APP信息
 	public AppInfo queryID(String id);
+	//新增App版本信息
+	public int Add(AppVersion appVersion);
 	//根据ID查询历史版本
 	public List<AppVersion> queryBb(String id);
+	//App审核
+	public int update(AppInfo appInfo);
+	//删除App信息
+	public int delInfo(int id);
+	//删除App版本信息
+	public int delVersion(int id);
 	//根据父级id查询分类列表
-	public List<AppCategory> fenlei(int id);
+	public List<AppCategory> fenlei(Integer id);
+	//查询二级分类
+	public List<AppCategory> queryEr();
+	//查询三级分类
+	public List<AppCategory> querySan();
+	//新增app信息
+	public Integer addappinfo(AppInfo appinfo);
+	//查询app名称
+	public  AppInfo findappinfo(String apkname);
 
 }

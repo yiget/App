@@ -14,7 +14,7 @@ public class AppVersion {
 	private String versionInfo;//版本介绍
 	private int publishStatus;//发布状态（来源于：data_dictionary，1 不发布 2 已发布 3 预发布）
 	private String downloadLink;//下载链接
-	private double versionSize;//版本大小（单位：M）
+	private int versionSize;//版本大小（单位：M）
 	private int createdBy;//创建者
 	private Date creationDate;//创建时间
 	private int modifyBy;//更新者
@@ -75,7 +75,7 @@ public class AppVersion {
 	public double getVersionSize() {
 		return versionSize;
 	}
-	public void setVersionSize(double versionSize) {
+	public void setVersionSize(int versionSize) {
 		this.versionSize = versionSize;
 	}
 	public int getCreatedBy() {

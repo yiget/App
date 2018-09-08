@@ -17,8 +17,8 @@
 			</if>
 	</select>
 	<!-- 查询所有App信息 -->
-		<select id="queryApp" resultType="entity.AppInfo" parameterType="Map">
-SELECT a.id,a.softwareName,a.apkName,a.softwareSize,(SELECT valueName FROM data_dictionary WHERE a.flatformId = valueId AND typeName = '所属平台') AS flatformName,
+	<select id="queryApp" resultType="entity.AppInfo" parameterType="Map">
+SELECT a.id,a.`status`,a.versionId,a.softwareName,a.apkName,a.softwareSize,(SELECT valueName FROM data_dictionary WHERE a.flatformId = valueId AND typeName = '所属平台') AS flatformName,
 (SELECT categoryName FROM app_category WHERE a.categoryLevel1 = id) AS categoryLevel1Name,
 (SELECT categoryName FROM app_category WHERE a.categoryLevel2 = id) AS categoryLevel2Name,
 (SELECT categoryName FROM app_category WHERE a.categoryLevel3 = id) AS categoryLevel3Name,
@@ -34,7 +34,17 @@ SELECT a.id,a.softwareName,a.apkName,a.softwareSize,(SELECT valueName FROM data_
 			<if test="flatformId != null and flatformId != ''">
 				and flatformId = #{flatformId}
 			</if>
+			<if test="categoryLevel1 != null and categoryLevel1 != ''">
+				and categoryLevel1 = #{categoryLevel1}
+			</if>
+			<if test="categoryLevel2 != null and categoryLevel2 != ''">
+				and categoryLevel2 = #{categoryLevel2}
+			</if>
+			<if test="categoryLevel3 != null and categoryLevel3 != ''">
+				and categoryLevel3 = #{categoryLevel3}
+			</if>
 		</where>
+	order by id desc
 	LIMIT #{pageIndex},5
 	</select>
 	<!-- 查询App总页数 -->
@@ -47,11 +57,31 @@ SELECT a.id,a.softwareName,a.apkName,a.softwareSize,(SELECT valueName FROM data_
 			<if test="STATUS != null and STATUS != ''">
 				and STATUS = #{STATUS}
 			</if>
-			<if test="flatformId != null and flatformId != 0">
+			<if test="flatformId != null and flatformId != ''">
 				and flatformId = #{flatformId}
+			</if>
+			<if test="categoryLevel1 != null and categoryLevel1 != ''">
+				and categoryLevel1 = #{categoryLevel1}
+			</if>
+			<if test="categoryLevel2 != null and categoryLevel2 != ''">
+				and categoryLevel2 = #{categoryLevel2}
+			</if>
+			<if test="categoryLevel3 != null and categoryLevel3 != ''">
+				and categoryLevel3 = #{categoryLevel3}
 			</if>
 		</where>
 	</select>
+	<!-- 查询二级分类 -->
+ 	<select id="queryEr" resultType="entity.AppCategory">
+	    SELECT id,categoryName FROM app_category  WHERE parentId in
+		(SELECT id FROM app_category  WHERE parentId is null)
+	</select>
+	<!-- 查询三级分类 -->
+ 	<select id="querySan" resultType="entity.AppCategory">
+	    SELECT id,categoryName FROM app_category  WHERE parentId in
+	    (SELECT id FROM app_category  WHERE parentId in
+	    (SELECT id FROM app_category  WHERE parentId is null))
+	</select> 
 	<!-- 查询所属平台 -->
 	<select id="queryPt" resultType="entity.DataDictionary">
 	    SELECT * FROM data_dictionary WHERE typeName = '所属平台'
@@ -71,26 +101,41 @@ SELECT a.id,a.softwareName,a.apkName,a.supportROM,a.interfaceLanguage,a.software
 (SELECT versionNo FROM app_version WHERE a.versionId = id) AS versionNo FROM app_info a where id = #{id}
 	</select> 
 	
+	<!-- 查询历史版本 -->
 	<select id="queryBb" resultType="entity.AppVersion">
 select (select softwareName from app_info where a.id=versionId)as appName,a.versionNo,a.versionSize,(SELECT valueName FROM data_dictionary WHERE a.publishStatus = valueId AND typeName = '发布状态') as publishStatusName,
 a.downloadLink,a.apkFileName,a.modifyDate from app_version a where appId=#{id}
 	</select>
-	<!-- 查询一级分类 -->
-<!-- 	<select id="queryYi" resultType="entity.AppCategory">
-	    SELECT categoryName FROM app_category  WHERE parentId is null
-	</select> -->
-	<!-- 查询二级分类 -->
-<!-- 	<select id="queryEr" resultType="entity.AppCategory">
-	    SELECT categoryName FROM app_category  WHERE parentId in
-		(SELECT id FROM app_category  WHERE parentId is null)
-	</select> -->
-	<!-- 查询三级分类 -->
-<!-- 	<select id="querySan" resultType="entity.AppCategory">
-	    SELECT categoryName FROM app_category  WHERE parentId in
-	    (SELECT id FROM app_category  WHERE parentId in
-	    (SELECT id FROM app_category  WHERE parentId is null))
-	</select> -->
-		<select id="fenlei" resultType="entity.AppCategory" parameterType="int">
-	select * from app_category WHERE parentid = #{id}
+	
+	<!-- 新增App版本信息-->
+	<insert id="Add" parameterType="entity.AppVersion">
+		insert into app_version(versionNo,versionSize,publishStatus,versionInfo,downloadLink) 
+		values(#{versionNo},#{versionSize},#{publishStatus},#{versionInfo},#{downloadLink})
+	</insert>
+	
+	<!-- 修改审核状态 -->
+	<update id="update">
+		update app_info set status=#{status} where id = #{id}
+	</update>
+	<!-- 删除App信息 -->
+	<delete id="delInfo">
+		DELETE FROM app_info where id=#{id}
+	</delete>
+	<!-- 删除版本信息 -->
+	<delete id="delVersion">
+		DELETE FROM app_version where appId=#{id}
+	</delete>
+	
+	<select id="fenlei" resultType="entity.AppCategory" parameterType="java.lang.Integer">
+	select * from app_category WHERE 
+	<if test="_parameter==null">parentid is null</if>
+	<if test="_parameter!=null">parentid =#{_parameter}</if>
 	</select>
+	<insert id="addappinfo" parameterType="entity.AppInfo">
+		INSERT INTO app_info VALUES(null,#{softwareName},#{APKName},#{supportROM},#{interfaceLanguage},#{softwareSize},#{updateDate},#{devId},#{appInfo},#{status},#{onSaleDate},#{offSaleDate},#{flatformId},#{categoryLevel3},#{downloads},#{createdBy},#{creationDate},#{modifyBy},#{modifyDate},#{categoryLevel1},#{categoryLevel2},#{logoPicPath},#{logoLocPath},#{versionId})
+	</insert>
+	<select id="findappinfo" resultType="entity.AppInfo" parameterType="String">
+	select * from app_info where apkname=#{apkname}
+	</select>
+
 </mapper>

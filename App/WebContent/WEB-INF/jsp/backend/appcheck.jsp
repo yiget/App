@@ -132,6 +132,7 @@
         </div>
         <div class="x_content" style="display: block;">
          <br>
+	<c:forEach var="appVersion" items="${appVersionList }" varStatus="status">
         <form class="form-horizontal form-label-left">
           <div class="item form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">版本号 <span class="required">*</span>
@@ -183,6 +184,7 @@
           <div class="clearfix"></div>
           <br/><br/>
         </form>
+        </c:forEach>
     </div>
     <div class="clearfix"></div>
     <br/><br/>

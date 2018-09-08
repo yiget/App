@@ -33,6 +33,7 @@
 	<link href='${pageContext.request.contextPath }/statics/localcss/appinfoadd.css' rel='stylesheet'>
 	<link href='${pageContext.request.contextPath }/statics/localcss/appinfolist.css' rel='stylesheet'>
 </head>
+<input type="hidden" id="zz1" value="${pageContext.request.contextPath}">
 <body class="nav-md footer_fixed">
 	<div class="container body">
 		<div class="main_container">
@@ -67,6 +68,9 @@
 						class="main_menu_side hidden-print main_menu">
 						<div class="menu_section">
 							<h3>${devUserSession.devName }</h3>
+							<br/>
+							<br/>
+							<br/>
 							<ul class="nav side-menu">
 								<li><a><i class="fa fa-home"></i> APP账户管理 <span
 										class="fa fa-chevron-down"></span>
@@ -100,7 +104,7 @@
 						</a> <a data-toggle="tooltip" data-placement="top" title="Lock"> <span
 							class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
 						</a> <a data-toggle="tooltip" data-placement="top" title="Logout"
-							href="${pageContext.request.contextPath }/dev/logout"> <span
+							href="${pageContext.request.contextPath }/dev/login"> <span
 							class="glyphicon glyphicon-off" aria-hidden="true"></span> </a>
 					</div>
 					<!-- /menu footer buttons -->
@@ -125,7 +129,7 @@
 									class=" fa fa-angle-down"></span> </a>
 								<ul class="dropdown-menu dropdown-usermenu pull-right">
 									<li><a
-										href="${pageContext.request.contextPath }/dev/logout"><i
+										href="${pageContext.request.contextPath }/dev/dologin2"><i
 											class="fa fa-sign-out pull-right"></i> Log Out</a>
 									</li>
 								</ul></li>

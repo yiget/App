@@ -54,13 +54,44 @@ public class UserServiceImpl implements UserService{
 		return userDao.queryID(id);
 	}
 	
+	//新增App版本信息
+	public int Add(AppVersion appVersion){
+		return userDao.Add(appVersion);
+	}
 	//根据ID查询历史版本
 	public List<AppVersion> queryBb(String id){
 		return userDao.queryBb(id);
 	}
-	
+	//App审核
+	public int update(AppInfo appInfo){
+		return userDao.update(appInfo);
+	}
+	//删除App信息
+	public int delInfo(int id){
+		return userDao.delInfo(id);
+	}
+	//删除App版本信息
+	public int delVersion(int id){
+		return userDao.delVersion(id);
+	}
 	//根据父级id查询分类列表
-	public List<AppCategory> fenlei(int id) {		
+	public List<AppCategory> fenlei(Integer id) {		
 		return userDao.fenlei(id);
+	}
+	//查询二级分类
+	public List<AppCategory> queryEr(){
+		return userDao.queryEr();
+	}
+	//查询三级分类
+	public List<AppCategory> querySan(){
+		return userDao.querySan();
+	}
+	//新增app信息
+	public Integer addappinfo(AppInfo appinfo){
+		return userDao.addappinfo(appinfo);
+	}
+	//查询app名称
+	public  AppInfo findappinfo(String apkname){
+		return userDao.findappinfo(apkname);
 	}
 }

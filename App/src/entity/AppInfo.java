@@ -15,7 +15,7 @@ public class AppInfo {
 	private String interfaceLanguage;//界面语言
 	private double softwareSize;//软件大小
 	private Date updateDate;//更新日期
-	private int devld;//开发者Id
+	private int devId;//开发者Id
 	private String appInfo;//应用简介
 	private int status;//状态
 	private Date onSaleDate;//上架时间
@@ -117,11 +117,11 @@ public class AppInfo {
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
 	}
-	public int getDevld() {
-		return devld;
+	public int getDevId() {
+		return devId;
 	}
-	public void setDevld(int devld) {
-		this.devld = devld;
+	public void setDevId(int devld) {
+		this.devId = devld;
 	}
 	public String getAppInfo() {
 		return appInfo;

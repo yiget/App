@@ -13,7 +13,12 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
  
  	<context:component-scan base-package="controller"></context:component-scan>     
- 	<mvc:annotation-driven/>
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+	<!-- Class = 编码处理类路径 -->  
+			<bean class="util.UTF8StringHttpMessageConverter"/>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
  	<mvc:default-servlet-handler/>   
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 	    <property name="prefix" value="/WEB-INF/jsp/"/> 

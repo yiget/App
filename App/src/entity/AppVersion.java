@@ -14,28 +14,27 @@ public class AppVersion {
 	private String versionInfo;//版本介绍
 	private int publishStatus;//发布状态（来源于：data_dictionary，1 不发布 2 已发布 3 预发布）
 	private String downloadLink;//下载链接
-	private int versionSize;//版本大小（单位：M）
+	private double versionSize;//版本大小（单位：M）
 	private int createdBy;//创建者
 	private Date creationDate;//创建时间
 	private int modifyBy;//更新者
-	private Date modifyDate;//最新更新时间
-	private String apkLocPath;//apk文件的服务器存储路径
-	private String apkFileName;//上传的apk文件名称
-	
-	private String appName;					//app名称
-	public String publishStatusName;		//发布状态
-	public String getAppName() {
-		return appName;
-	}
-	public void setAppName(String appName) {
-		this.appName = appName;
-	}
+	private String appName;//APPname
+	private String publishStatusName;
 	public String getPublishStatusName() {
 		return publishStatusName;
 	}
 	public void setPublishStatusName(String publishStatusName) {
 		this.publishStatusName = publishStatusName;
 	}
+	private Date modifyDate;//最新更新时间
+	public String getAppName() {
+		return appName;
+	}
+	public void setAppName(String appName) {
+		this.appName = appName;
+	}
+	private String apkLocPath;//apk文件的服务器存储路径
+	private String apkFileName;//上传的apk文件名称
 	public int getId() {
 		return id;
 	}
@@ -75,7 +74,7 @@ public class AppVersion {
 	public double getVersionSize() {
 		return versionSize;
 	}
-	public void setVersionSize(int versionSize) {
+	public void setVersionSize(double versionSize) {
 		this.versionSize = versionSize;
 	}
 	public int getCreatedBy() {

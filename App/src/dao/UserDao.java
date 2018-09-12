@@ -28,8 +28,16 @@ public interface UserDao {
 	public AppInfo queryID(String id);
 	//新增App版本信息
 	public int Add(AppVersion appVersion);
-	//根据ID查询历史版本
+	//更新info表的最新版本信息
+	public int updateAppinfo(Map<String, Integer> map);
+	//根据ID查询所有历史版本
 	public List<AppVersion> queryBb(String id);
+	//根据ID查询当前版本信息
+	public AppVersion queryBbid(String id);
+	//修改App版本信息
+	public int updateApp(AppVersion appVersion);
+	//App上下架
+	public int updateSxj(AppInfo appInfo);
 	//App审核
 	public int update(AppInfo appInfo);
 	//删除App信息
@@ -46,4 +54,8 @@ public interface UserDao {
 	public Integer addappinfo(AppInfo appinfo);
 	//查询app名称
 	public AppInfo findappinfo(String apkname);
+	//修改info表
+	public int updateInfo(AppInfo info);
+	//根据条件查找App基础信息
+	public AppInfo queryInfo(int id);
 }

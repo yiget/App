@@ -103,16 +103,33 @@ SELECT a.id,a.softwareName,a.apkName,a.supportROM,a.interfaceLanguage,a.software
 	
 	<!-- 查询历史版本 -->
 	<select id="queryBb" resultType="entity.AppVersion">
-select (select softwareName from app_info where a.id=versionId)as appName,a.versionNo,a.versionSize,(SELECT valueName FROM data_dictionary WHERE a.publishStatus = valueId AND typeName = '发布状态') as publishStatusName,
-a.downloadLink,a.apkFileName,a.modifyDate from app_version a where appId=#{id}
+select a.appId,b.softwareName as appName,a.versionNo,a.versionSize,(SELECT valueName FROM data_dictionary WHERE a.publishStatus = valueId AND typeName = '发布状态') as publishStatusName,
+a.downloadLink,a.apkFileName,a.modifyDate from app_version a,app_info b where a.appId=b.id and appId=#{id}
+	</select>
+	
+	<!-- 根据ID查询当前版本信息 -->
+	<select id="queryBbid" resultType="entity.AppVersion">
+		select * from app_version where id = #{id}
 	</select>
 	
 	<!-- 新增App版本信息-->
-	<insert id="Add" parameterType="entity.AppVersion">
-		insert into app_version(versionNo,versionSize,publishStatus,versionInfo,downloadLink) 
-		values(#{versionNo},#{versionSize},#{publishStatus},#{versionInfo},#{downloadLink})
+	<insert id="Add" parameterType="entity.AppVersion"  useGeneratedKeys="true" keyProperty="id">
+	INSERT INTO app_version VALUES(NULL,#{appId},#{versionNo},#{versionInfo},#{publishStatus},#{downloadLink},#{versionSize},#{createdBy},#{creationDate},#{modifyBy},#{modifyDate},#{apkLocPath},#{apkFileName})
 	</insert>
-	
+	<update id="updateAppinfo" parameterType="map">
+		update app_info set versionId =#{versionId} where id=#{appId}
+	</update>
+	<!-- 修改App版本信息 -->
+	<update id="updateApp">
+		update app_version
+		set versionSize=#{versionSize},versionInfo=#{versionInfo},publishStatus=#{publishStatus},
+		downloadLink=#{downloadLink},apkLocPath=#{apkLocPath},apkFileName=#{apkFileName},modifyBy=#{modifyBy},modifyDate=#{modifyDate}
+		where id = #{id}
+	</update>
+	<!-- App上下架 -->
+	<update id="updateSxj">
+	 	update app_info set status = #{status} where id=#{id}
+	</update>
 	<!-- 修改审核状态 -->
 	<update id="update">
 		update app_info set status=#{status} where id = #{id}
@@ -125,17 +142,40 @@ a.downloadLink,a.apkFileName,a.modifyDate from app_version a where appId=#{id}
 	<delete id="delVersion">
 		DELETE FROM app_version where appId=#{id}
 	</delete>
-	
+	<!-- //根据父级id查询分类列表  -->
 	<select id="fenlei" resultType="entity.AppCategory" parameterType="java.lang.Integer">
 	select * from app_category WHERE 
 	<if test="_parameter==null">parentid is null</if>
 	<if test="_parameter!=null">parentid =#{_parameter}</if>
 	</select>
+	<!-- 新增app信息 -->
 	<insert id="addappinfo" parameterType="entity.AppInfo">
-		INSERT INTO app_info VALUES(null,#{softwareName},#{APKName},#{supportROM},#{interfaceLanguage},#{softwareSize},#{updateDate},#{devId},#{appInfo},#{status},#{onSaleDate},#{offSaleDate},#{flatformId},#{categoryLevel3},#{downloads},#{createdBy},#{creationDate},#{modifyBy},#{modifyDate},#{categoryLevel1},#{categoryLevel2},#{logoPicPath},#{logoLocPath},#{versionId})
+		INSERT INTO app_info VALUES(null,#{softwareName},#{APKName},#{supportROM},
+		#{interfaceLanguage},#{softwareSize},#{updateDate},#{devId},#{appInfo},#{status},
+		#{onSaleDate},#{offSaleDate},#{flatformId},#{categoryLevel3},#{downloads},
+		#{createdBy},#{creationDate},null,#{modifyDate},#{categoryLevel1},#{categoryLevel2},
+		#{logoPicPath},#{logoLocPath},null)
 	</insert>
+	<!-- 验证Apk名称唯一性 -->
 	<select id="findappinfo" resultType="entity.AppInfo" parameterType="String">
 	select * from app_info where apkname=#{apkname}
 	</select>
-
+	<!-- 修改info表-->
+	<update id="updateInfo" parameterType="entity.AppInfo">
+		update app_info 
+		set softwareName=#{softwareName},APKName=#{APKName},supportROM=#{supportROM},interfaceLanguage=#{interfaceLanguage},
+			softwareSize=#{softwareSize},downloads=#{downloads},flatformId=#{flatformId},categoryLevel1=#{categoryLevel1},
+			categoryLevel2=#{categoryLevel2},categoryLevel3=#{categoryLevel3},status=#{status},
+			appInfo=#{appInfo},logoLocPath=#{logoLocPath},logoPicPath=#{logoPicPath},modifyBy=#{modifyBy}
+		where id=#{id}
+	</update>
+	<!-- 根据条件查找App基础信息 -->
+	<select id="queryInfo" resultType="AppInfo">
+		SELECT a.*,(SELECT valueName FROM data_dictionary WHERE a.flatformId = valueId AND typeName = '所属平台') AS flatformName,
+		(SELECT categoryName FROM app_category WHERE a.categoryLevel1 = id) AS categoryLevel1Name,
+		(SELECT categoryName FROM app_category WHERE a.categoryLevel2 = id) AS categoryLevel2Name,
+		(SELECT categoryName FROM app_category WHERE a.categoryLevel3 = id) AS categoryLevel3Name,
+		(SELECT valueName FROM data_dictionary WHERE a. STATUS = valueId AND typeName = 'APP状态') AS statusName,a.downloads,
+		(SELECT versionNo FROM app_version WHERE a.versionId = id) AS versionNo FROM app_info a where id = #{id}
+	</select>
 </mapper>

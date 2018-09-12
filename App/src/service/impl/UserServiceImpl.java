@@ -58,9 +58,25 @@ public class UserServiceImpl implements UserService{
 	public int Add(AppVersion appVersion){
 		return userDao.Add(appVersion);
 	}
+	//更新info表的最新版本信息
+	public int updateAppinfo(Map<String, Integer> map){
+		return userDao.updateAppinfo(map);
+	}
 	//根据ID查询历史版本
 	public List<AppVersion> queryBb(String id){
 		return userDao.queryBb(id);
+	}
+	//根据ID查询当前版本信息
+	public AppVersion queryBbid(String id){
+		return userDao.queryBbid(id);
+	}
+	//修改App版本信息
+	public int updateApp(AppVersion appVersion){
+		return userDao.updateApp(appVersion);
+	}
+	//App上下架
+	public int updateSxj(AppInfo appInfo){
+		return userDao.updateSxj(appInfo);
 	}
 	//App审核
 	public int update(AppInfo appInfo){
@@ -93,5 +109,13 @@ public class UserServiceImpl implements UserService{
 	//查询app名称
 	public  AppInfo findappinfo(String apkname){
 		return userDao.findappinfo(apkname);
+	}
+	//修改info表
+	public int updateInfo(AppInfo info){
+		return userDao.updateInfo(info);
+	}
+	//根据条件查找App基础信息
+	public AppInfo queryInfo(int id){
+		return userDao.queryInfo(id);
 	}
 }

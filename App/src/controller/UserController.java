@@ -49,6 +49,18 @@ public class UserController {
 	public String login2(){
 		return "devlogin";	
 	}
+	//注销后台
+	@RequestMapping("/manager/dologinman")
+	public String loginman(HttpSession session){
+		session.removeAttribute("userSession");
+		return "backendlogin";
+	}
+	//注销前台
+	@RequestMapping("/dev/dologindev")
+	public String logindev(HttpSession session){
+		session.removeAttribute("devUserSession");
+		return "devlogin";
+	}
 	//后台登录方法
 	@RequestMapping("/manager/dologin")
 	public String dologin(HttpServletRequest request,HttpSession session){
@@ -210,7 +222,6 @@ public class UserController {
 		List<AppVersion> appVersion = userService.queryBb(id);
 		request.setAttribute("appInfo", appinfo);
 		request.setAttribute("appVersionList", appVersion);
-		System.out.println(appVersion.size());
 		return "backend/appcheck";
 	}
 	//App审核

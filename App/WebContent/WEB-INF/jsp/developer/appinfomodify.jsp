@@ -135,7 +135,7 @@
             	<c:if test="${appInfo.status == 3}">
             	 	<button id="send" type="submit" name="status" value="1" class="btn btn-success">保存并再次提交审核</button>
             	</c:if>
-              <button id="send" type="submit" class="btn btn-success">保存</button>
+              <button id="send" type="submit"  name="status" value="${appInfo.status}" class="btn btn-success">保存</button>
               <button type="button" class="btn btn-primary" id="back">返回</button>
               <br/><br/>
             </div>
